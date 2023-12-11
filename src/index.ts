@@ -1,1 +1,1 @@
-// export { Blah as default } from './lib'
+export {convertHtmlToADF} from './html-to-adf';
