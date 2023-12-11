@@ -1,124 +1,114 @@
 import { TextNode } from "./interfaces/text-node";
+import parse from 'html-dom-parser';
 
-const processNode = (node, marks = [])=> {
-    let textNode: TextNode = {
+const processNode = (node, marks = [] as any) => {
+  let textNodes: TextNode[] = [];
+
+  if (node.type === 'text') {
+    textNodes.push({
       type: "text",
-      text: node.textContent,
+      text: node.data,
       marks: marks,
-    };
-  
-    if (node.nodeName === "CODE") {
-      textNode.marks.push({ type: "code" });
-    } else {
-      if (node.nodeName === "STRONG") {
-        textNode.marks.push({ type: "strong" });
-      }
-      if (node.nodeName === "DEL") {
-        textNode.marks.push({ type: "strike" });
-      }
-      if (node.nodeName === "EM") {
-        textNode.marks.push({ type: "em" });
-      }
-      if (node.nodeName === "U") {
-        textNode.marks.push({ type: "underline" });
-      }
-      if (node.nodeName === "A") {
-        textNode.marks.push({
-          type: "link",
-          attrs: {
-            href: node.getAttribute("href"),
-            title: node.textContent,
-          },
-        });
-      }
-      if (node.nodeName === "BR") {
-        textNode = { type: "text", text: "  ", marks: [] };
-      }
-      if (node.childNodes.length > 0) {
-        Array.from(node.childNodes)
-          .map((childNode) => processNode(childNode, textNode.marks))
-          .flat();
-      }
+    });
+  }
+
+  if (node.type === 'tag') {
+    if (node.name === "b") {
+      marks.push({ type: "strong" });
+    } else if (node.name === "del") {
+      marks.push({ type: "strike" });
+    } else if (node.name === "em") {
+      marks.push({ type: "em" });
+    } else if (node.name === "u") {
+      marks.push({ type: "underline" });
+    } else if (node.name === "a") {
+      marks.push({
+        type: "link",
+        attrs: {
+          href: node.attributes.href,
+          title: node.text || node.textContent,
+        },
+      });
+    } else if (node.name === "br") {
+      textNodes.push({ type: "text", text: "  ", marks: [] });
     }
-  
-    return textNode;
+  }
+
+  const children = node.children || [];
+
+  if (children.length > 0) {
+    children.forEach((childNode) => {
+      const childTextNodes = processNode(childNode, marks.slice());
+      textNodes = textNodes.concat(childTextNodes);
+    });
+  }
+
+  return textNodes;
 };
-  
-const convertToADF = (htmlString) =>{
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(htmlString, "text/html");
-    const adf = {
-      version: 1,
-      type: "doc",
-      content: [],
-    };
-  
-    doc.body.childNodes.forEach((node) => {
-      const textNodes = Array.from(node.childNodes).map((childNode) =>
-        processNode(childNode, []),
-      );
-  
-      if (node.nodeName === "P") {
+
+const convertToADF = (htmlString: string) => {
+  const nodes = parse(htmlString);
+
+  const adf = {
+    version: 1,
+    type: "doc",
+    content: [],
+  } as any;
+
+  nodes.forEach((node: any) => {
+    const textNodes = processNode(node, []);
+    if (node.type === 'tag') {
+      if (node.name === "p") {
         adf.content.push({
           type: "paragraph",
-          content: textNodes.filter(Boolean),
+          content: textNodes,
         });
-      } else if (node.nodeName.startsWith("H")) {
-        const level = parseInt(node.nodeName.substring(1));
+      } else if (node.name.startsWith("h")) {
+        const level = parseInt(node.name.substring(1));
         adf.content.push({
           type: "heading",
           attrs: {
             level: level,
           },
-          content: textNodes.filter(Boolean),
+          content: textNodes,
         });
-      } else if (node.nodeName === "UL") {
-        const items = Array.from(node.getElementsByTagName("LI")).map((li) => {
-          const liTextNodes = Array.from(li.childNodes).map((liChildNode) =>
-            processNode(liChildNode, []),
-          );
+      } else if (node.name === "ul" || node.name === "ol") {
+        const listType = node.name === "ul" ? "bulletList" : "orderedList";
+        const items = (node.children || []).map((li: any) => {
+          const liTextNodes = processNode(li, []);
           return {
             type: "listItem",
-            content: [
-              { type: "paragraph", content: liTextNodes.filter(Boolean) },
-            ],
+            content: [{ type: "paragraph", content: liTextNodes }],
           };
         });
         adf.content.push({
-          type: "bulletList",
+          type: listType,
           content: items,
         });
-      } else if (node.nodeName === "OL") {
-        const items = Array.from(node.getElementsByTagName("LI")).map((li) => {
-          const liTextNodes = Array.from(li.childNodes).map((liChildNode) =>
-            processNode(liChildNode, []),
-          );
-          return {
-            type: "listItem",
-            content: [
-              { type: "paragraph", content: liTextNodes.filter(Boolean) },
-            ],
-          };
-        });
-        adf.content.push({
-          type: "orderedList",
-          content: items,
-        });
-      } else if (node.nodeName === "BLOCKQUOTE") {
-        const blockquoteTextNodes = Array.from(node.childNodes).map(
-          (blockquoteChildNode) => processNode(blockquoteChildNode, []),
+      } else if (node.name === "blockquote") {
+        const blockquoteTextNodes = (node.children || []).map((blockquoteChildNode: any) =>
+          processNode(blockquoteChildNode, [])
         );
         adf.content.push({
           type: "blockquote",
           content: [
             {
               type: "paragraph",
-              content: blockquoteTextNodes.filter(Boolean),
+              content: blockquoteTextNodes,
             },
           ],
-          // content: blockquoteTextNodes.filter(Boolean),
         });
       }
-    });
-    return adf;
+    }
+  });
+
+  return adf;
 };
+
+const htmlString = `
+<p>Your <b>HTML</b> string goes here</p>
+
+<p>Hello person <i>I am</i></p>
+`;
+const result = convertToADF(htmlString);
+console.log(JSON.stringify(result, null, 2));
