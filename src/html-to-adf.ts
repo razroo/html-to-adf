@@ -104,11 +104,3 @@ const convertToADF = (htmlString: string) => {
 
   return adf;
 };
-
-const htmlString = `
-<p>Your <b>HTML</b> string goes here</p>
-
-<p>Hello person <i>I am</i></p>
-`;
-const result = convertToADF(htmlString);
-console.log(JSON.stringify(result, null, 2));
