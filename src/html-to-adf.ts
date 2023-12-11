@@ -46,7 +46,7 @@ const processNode = (node, marks = [] as any) => {
   return textNodes;
 };
 
-const convertToADF = (htmlString: string) => {
+export function convertHtmlToADF(htmlString: string): any {
   const nodes = parse(htmlString);
 
   const adf = {
@@ -103,4 +103,4 @@ const convertToADF = (htmlString: string) => {
   });
 
   return adf;
-};
+}
