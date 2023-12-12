@@ -1,7 +1,7 @@
 import { TextNode } from "./interfaces/text-node";
 import parse from 'html-dom-parser';
 
-const processNode = (node, marks = [] as any) => {
+const processNode = (node: any, marks = [] as any) => {
   let textNodes: TextNode[] = [];
 
   if (node.type === 'text') {
@@ -37,7 +37,7 @@ const processNode = (node, marks = [] as any) => {
   const children = node.children || [];
 
   if (children.length > 0) {
-    children.forEach((childNode) => {
+    children.forEach((childNode: any) => {
       const childTextNodes = processNode(childNode, marks.slice());
       textNodes = textNodes.concat(childTextNodes);
     });
