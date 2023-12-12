@@ -65,7 +65,7 @@ export function convertHtmlToADF(htmlString: string): any {
           type: "paragraph",
           content: textNodes,
         });
-      } else if(node.name === "code") {
+      } else if(node.name === "code" || node.name === 'pre') {
         adf.content.push({
           type: "codeBlock",
           attrs: {},
