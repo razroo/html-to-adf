@@ -1,5 +1,5 @@
 {
-  "name": "html-to-adf",
+  "name": "@razroo/html-to-adf",
   "version": "1.0.0",
   "description": "HtmlToAdf",
   "main": "./lib/cjs/index.js",
