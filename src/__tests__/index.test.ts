@@ -65,6 +65,7 @@ it('should convert a paragraph code block thereafter', () => {
         attrs: {},
         "content": [
            {
+              marks: [],
               "type": "text",
               "text": " // hello "
            }
