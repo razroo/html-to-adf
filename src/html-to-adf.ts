@@ -17,6 +17,8 @@ const processNode = (node: any, marks = [] as any) => {
       marks.push({ type: "strong" });
     } else if (node.name === "del") {
       marks.push({ type: "strike" });
+    } else if (node.name === "code") {
+      marks.push({ type: "code" });
     } else if (node.name === "em") {
       marks.push({ type: "em" });
     } else if (node.name === "u") {
@@ -56,9 +58,16 @@ export function convertHtmlToADF(htmlString: string): any {
   } as any;
 
   nodes.forEach((node: any) => {
+    console.log('node.name');
+    console.log(node.name);
     const textNodes = processNode(node, []);
     if (node.type === 'tag') {
       if (node.name === "p") {
+        adf.content.push({
+          type: "paragraph",
+          content: textNodes,
+        });
+      } else if(node.name === "code") {
         adf.content.push({
           type: "paragraph",
           content: textNodes,
