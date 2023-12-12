@@ -61,16 +61,13 @@ it('should convert a paragraph code block thereafter', () => {
           ]
        },
        {
-        "type": "paragraph",
+        "type": "codeBlock",
+        attrs: {},
         "content": [
            {
+              marks: [],
               "type": "text",
-              "text": " // hello ",
-              "marks": [
-                 {
-                    "type": "code"
-                 }
-              ]
+              "text": " // hello "
            }
         ]
      }

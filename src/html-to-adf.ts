@@ -17,8 +17,6 @@ const processNode = (node: any, marks = [] as any) => {
       marks.push({ type: "strong" });
     } else if (node.name === "del") {
       marks.push({ type: "strike" });
-    } else if (node.name === "code") {
-      marks.push({ type: "code" });
     } else if (node.name === "em") {
       marks.push({ type: "em" });
     } else if (node.name === "u") {
@@ -69,7 +67,8 @@ export function convertHtmlToADF(htmlString: string): any {
         });
       } else if(node.name === "code") {
         adf.content.push({
-          type: "paragraph",
+          type: "codeBlock",
+          attrs: {},
           content: textNodes,
         });
       } else if (node.name.startsWith("h")) {
