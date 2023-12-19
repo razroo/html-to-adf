@@ -56,8 +56,6 @@ export function convertHtmlToADF(htmlString: string): any {
   } as any;
 
   nodes.forEach((node: any) => {
-    console.log('node.name');
-    console.log(node.name);
     const textNodes = processNode(node, []);
     if (node.type === 'tag') {
       if (node.name === "p") {
@@ -65,7 +63,15 @@ export function convertHtmlToADF(htmlString: string): any {
           type: "paragraph",
           content: textNodes,
         });
+      } else if (node.attribs.class && node.attribs.class.includes("remark-highlight")) {
+        // Handle code block with remark-highlight class
+        adf.content.push({
+          type: "codeBlock",
+          attrs: {},
+          content: [{ type: "text", text: textNodes, marks: [] }],
+        });
       } else if(node.name === "code" || node.name === 'pre') {
+        console.log('inside here called');
         adf.content.push({
           type: "codeBlock",
           attrs: {},
