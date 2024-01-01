@@ -103,9 +103,7 @@ it('should convert a pre tag to code block', () => {
                  ]
               },
               {
-               "type": "hardBreak",
-               "text": "",
-               marks: []
+               "type": "hardBreak"
              }
            ]
         },

@@ -30,7 +30,7 @@ const processNode = (node: any, marks = [] as any) => {
         },
       });
     } else if (node.name === "br") {
-      textNodes.push({ type: "hardBreak", text: "", marks: [] });
+      textNodes.push({ type: "hardBreak"} as any);
     }
   }
 
