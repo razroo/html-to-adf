@@ -30,7 +30,7 @@ const processNode = (node: any, marks = [] as any) => {
         },
       });
     } else if (node.name === "br") {
-      textNodes.push({ type: "text", text: "  ", marks: [] });
+      textNodes.push({ type: "hardBreak", text: "", marks: [] });
     }
   }
 
@@ -71,7 +71,6 @@ export function convertHtmlToADF(htmlString: string): any {
           content: [{ type: "text", text: textNodes, marks: [] }],
         });
       } else if(node.name === "code" || node.name === 'pre') {
-        console.log('inside here called');
         adf.content.push({
           type: "codeBlock",
           attrs: {},

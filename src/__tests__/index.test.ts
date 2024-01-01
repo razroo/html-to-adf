@@ -77,7 +77,7 @@ it('should convert a paragraph code block thereafter', () => {
 });
 
 it('should convert a pre tag to code block', () => {
-   const htmlString = `<p>test <b>this</b></p>
+   const htmlString = `<p>test <b>this</b><br></p>
  <pre> // hello </pre>  
    `;
    const result = convertHtmlToADF(htmlString);
@@ -101,7 +101,12 @@ it('should convert a pre tag to code block', () => {
                        "type": "strong"
                     }
                  ]
-              }
+              },
+              {
+               "type": "hardBreak",
+               "text": "",
+               marks: []
+             }
            ]
         },
         {
