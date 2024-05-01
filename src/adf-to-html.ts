@@ -17,7 +17,7 @@ interface TextNode {
       '"': "&quot;",
       "'": "&apos;",
     };
-    return text.replace(/[&<>"']/g, (char) => map[char]);
+    return text.replace(/[&<>"']/g, (char: any) => map[char]);
   };
   
   const processNode = (node: any, html: string, nodeText?: string): string => {
