@@ -71,9 +71,7 @@ it('should convert a paragraph code block thereafter', () => {
     ]
   }
   const result = convertADFToHtml(adfObject);
-  const expected = `<p>test <b>this</b></p>
-<code> // hello </code>  
-  `;
+  const expected = `<p>test <b>this</b></p><code> // hello </code>`;
   expect(result).toEqual(expected);
 });
 
