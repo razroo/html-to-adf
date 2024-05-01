@@ -20,13 +20,13 @@ interface TextNode {
     return text.replace(/[&<>"']/g, (char) => map[char]);
   };
   
-  const processNode = (node: any): string => {
-    let html = "";
-  
-    if (node.type === "text") {
+  const processNode = (node: any, html: string, nodeText?: string): string => {
+    if (node.type === "text" && !(node?.marks?.length)) {
       html += escapeHtml(node.text);
     } else if (node.type === "hardBreak") {
       html += "<br>";
+    } else if (node.type === "strong" && nodeText) {
+      html += `<b>${nodeText}</b>`;
     } else if (node.type === "paragraph") {
       html += `<p>${processNodes(node.content)}</p>`;
     } else if (node.type === "codeBlock") {
@@ -52,16 +52,19 @@ interface TextNode {
       html += `<a href="${node.attrs.href}" title="${node.attrs.title}">`;
       html += processNodes(node.content);
       html += "</a>";
-    } else if (node.marks) {  // Handle nodes with marks
-      const innerHtml = processNodes(node.content);
+    } 
+    
+    if (node?.marks?.length) {  // Handle nodes with marks
+      const innerHtml = processNodes(node.marks, node.text);
       html += innerHtml;
     }
   
     return html;
   };
   
-  const processNodes = (nodes: TextNode[]): string => {
-    return nodes.map(processNode).join("");
+  const processNodes = (nodes: TextNode[], nodeText?: string) => {
+    const html = "";
+    return nodes.map(node => processNode(node, html, nodeText)).join("");
   };
   
   export function convertADFToHtml(adf: { type: string; content: any[]; version?: number }): string {
@@ -70,3 +73,4 @@ interface TextNode {
     }
     return processNodes(adf.content);
   }
+  
