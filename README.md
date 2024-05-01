@@ -1,13 +1,85 @@
-# Razroo NPM Starter
-Includes Typescript 
+# Html To ADF
+Used to convert Atlassian Document Format from ADF to html and also from 
+html to adf
 
-## Easy way to use this boilerplate ##
+# How to install
+```
+npm install @razroo/html-to-adf --save
+```
 
-1. Git clone into repo name that you want 
-2. rm -rf .git 
-3. Run git init 
-4. Push to repo of choice. 
+## Two main functions
 
-## To build ##
-`npm run build`
-`npm publish`
+### convertHtmlToADF
+
+```ts
+import {convertHtmlToADF} from "@razroo/html-to-adf";
+
+it('should convert a simple paragraph with bold', () => {
+  const htmlString = `<p>test <b>this</b></p>`;
+  const result = convertHtmlToADF(htmlString);
+  const expected = {
+    "version": 1,
+    "type": "doc",
+    "content": [
+       {
+          "type": "paragraph",
+          "content": [
+             {
+                "type": "text",
+                "text": "test ",
+                marks: []
+             },
+             {
+                "type": "text",
+                "text": "this",
+                "marks": [
+                   {
+                      "type": "strong"
+                   }
+                ]
+             }
+          ]
+       }
+    ]
+  }
+  console.log(result);
+  expect(result).toEqual(expected);
+});
+```
+
+### convertADFToHtml
+
+```ts
+import {convertADFToHtml} from "@razroo/html-to-adf";
+
+it('should convert a simple paragraph with bold', () => {
+  const adfObject = {
+    "version": 1,
+    "type": "doc",
+    "content": [
+       {
+          "type": "paragraph",
+          "content": [
+             {
+                "type": "text",
+                "text": "test ",
+                marks: []
+             },
+             {
+                "type": "text",
+                "text": "this",
+                "marks": [
+                   {
+                      "type": "strong"
+                   }
+                ]
+             }
+          ]
+       }
+    ]
+  }
+  const result = convertADFToHtml(adfObject);
+  const expected = `<p>test <b>this</b></p>`;
+  expect(result).toEqual(expected);
+});
+```
