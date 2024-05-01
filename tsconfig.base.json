@@ -8,6 +8,7 @@
     "allowJs": true,
     "declaration": true,
     "declarationMap": true,
+    "noImplicitAny": false,
     "types": ["node", "jest"],
     "allowSyntheticDefaultImports": true
   },
