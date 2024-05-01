@@ -76,11 +76,7 @@ it('should convert a paragraph code block thereafter', () => {
 });
 
 it('should convert a pre tag to code block', () => {
-   const htmlString = `<p>test <b>this</b><br></p>
- <pre> // hello </pre>  
-   `;
-   const result = convertHtmlToADF(htmlString);
-   const expected = {
+   const AdfObject = {
      "version": 1,
      "type": "doc",
      "content": [
@@ -119,5 +115,7 @@ it('should convert a pre tag to code block', () => {
       }
      ]
    }
+   const result = convertADFToHtml(AdfObject);
+   const expected = `<p>test <b>this</b><br></p><code> // hello </code>`;
    expect(result).toEqual(expected);
  });
