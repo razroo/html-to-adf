@@ -16,7 +16,7 @@ Then the ADF description is successfully converted to HTML
 
 Notes: 
 
-# Will use the function here: [https://github.com/razroo/html-to-adf?tab=readme-ov-file#convertadftohtml](https://github.com/razroo/html-to-adf?tab=readme-ov-file#convertadftohtml|smart-link)
+# Will use the function here: [https://github.com/razroo/html-to-adf?tab=readme-ov-file#convertadftohtml](https://github.com/razroo/html-to-adf?tab=readme-ov-file#convertadftohtml) 
 # Will be within the importJiraTickets function`;
       expect(result).toEqual(expected);
     });
