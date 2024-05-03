@@ -1,3 +1,5 @@
+import {marked} from 'marked';
+
 export function convertJiraMarkdownToRegularMarkdown(jiraMarkdown: string): string {
     // Replace Jira-specific headers with regular markdown headers
     let markdown = jiraMarkdown.replace(/^h(\d)?\. /gm, (match, level) => {
@@ -41,4 +43,9 @@ export function convertJiraMarkdownToRegularMarkdown(jiraMarkdown: string): stri
     });
   
     return markdown;
+}
+
+export async function convertJiraMarkdownToHtml(jiraMarkdown: string): Promise<string> {
+  const markdown = convertJiraMarkdownToRegularMarkdown(jiraMarkdown);
+  return await marked(markdown);
 }
