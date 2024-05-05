@@ -1,13 +1,14 @@
 # Html To ADF
-Used to convert Atlassian Document Format from ADF to html and also from 
-html to adf
+Used to convert from Atlassian Document Format(ADF) and also from 
+html to ADF. In addition, allows to convert from Jira Markdown to 
+regular markdown. 
 
 # How to install
 ```
 npm install @razroo/html-to-adf --save
 ```
 
-## Two main functions
+## HTML to ADF + ADF to HTML
 
 ### convertHtmlToADF
 
@@ -83,3 +84,7 @@ it('should convert a simple paragraph with bold', () => {
   expect(result).toEqual(expected);
 });
 ```
+
+## Convert Jira Markdown to Markdown or HTML
+
+### Convert Jira Markdown to Markdown
