@@ -53,7 +53,7 @@ export function convertJiraMarkdownToRegularMarkdown(jiraMarkdown: string): stri
     /\{code(:([a-z]+))?([:|]?(title|borderStyle|borderColor|borderWidth|bgColor|titleBGColor)=.+?)*\}([^]*?)\n?\{code\}/gm,
     '```$2$5\n```'
   )
-  .replace('{noformat}', '```')
+  .replace(/\{noformat\}/g, '```')
 }
 
 export async function convertJiraMarkdownToHtml(jiraMarkdown: string): Promise<string> {

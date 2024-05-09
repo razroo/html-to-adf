@@ -21,22 +21,20 @@ expect(result).toEqual(expected);
 });
 
 it('should convert jira markdown with special curly braces to markdown', () => {
-  const jiraMarkdown = "{noformat}Scenario We are not sure whether or not scheduling via close is a users local time on their computer or via timezone in close.com system\n  Given I am Caitlin \n    And I am acting on behalf of Charlie Greenman\n  When I use Charlie Greenman's Close.com account \n    And Send out an email via send later\n  Then It should send an email at the expected time{noformat}\n\nNotes: \n\n# I will send an email to my email address 10 minutes later than the current time to test. Feel free to use this method to test. Once receive email can mark this ticket as complete"
+  const jiraMarkdown = "{noformat}Scenario We are not sure whether or not scheduling via close is a users local time on their computer or via timezone in close.com system\n  Given I am Henry \n    And I am acting on behalf of Charlie Greenman\n  When I use Charlie Greenman's Close.com account \n    And Send out an email via send later\n  Then It should send an email at the expected time{noformat}\n\nNotes: \n\n# I will send an email to my email address 10 minutes later than the current time to test. Feel free to use this method to test. Once receive email can mark this ticket as complete"
   const result = convertJiraMarkdownToRegularMarkdown(jiraMarkdown);
-  const expected = `**Feature**: Convert Jira ticket ADF description to HTML
-
-Scenario: User converts Jira ticket ADF to HTML
-Given that I have a Jira ticket ADF description
-When I initiate the conversion process
-  And use the importJiraTicket function
-Then the ADF description is successfully converted to HTML
+  const expected = `\`\`\`Scenario We are not sure whether or not scheduling via close is a users local time on their computer or via timezone in close.com system
+  Given I am Henry 
+    And I am acting on behalf of Charlie Greenman
+  When I use Charlie Greenman's Close.com account 
+    And Send out an email via send later
+  Then It should send an email at the expected time\`\`\`
 
 Notes: 
 
-1. Will use the function here: [https://github.com/razroo/html-to-adf?tab=readme-ov-file#convertadftohtml](https://github.com/razroo/html-to-adf?tab=readme-ov-file#convertadftohtml) 
-1. Will be within the importJiraTickets function`;
-expect(result).toEqual(expected);
-})
+1. I will send an email to my email address 10 minutes later than the current time to test. Feel free to use this method to test. Once receive email can mark this ticket as complete`;
+    expect(result).toEqual(expected);
+  });
 });
 
 describe('convertJiraMarkdownToHtml', () => {
