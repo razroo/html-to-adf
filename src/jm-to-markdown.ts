@@ -7,8 +7,6 @@ export function convertJiraMarkdownToRegularMarkdown(jiraMarkdown: string): stri
   })
   // Ordered lists
   .replace(/^[ \t]*(#+)\s+/gm, (match, nums) => {
-    console.log('match');
-    console.log(match);
     return `${Array(nums.length).join('   ')}1. `;
   })
   // Headers 1-6
@@ -48,12 +46,14 @@ export function convertJiraMarkdownToRegularMarkdown(jiraMarkdown: string): stri
   .replace(/\{color:(.+?)\}/g, (match, color) => {
     return '';
   })
+  .replace(/{noformat}([\s\S]*?){noformat}/g, (match, p1) => {
+    return `\`\`\`\n${p1.trim()}\n\`\`\``;
+  })
   // Code Block
   .replace(
     /\{code(:([a-z]+))?([:|]?(title|borderStyle|borderColor|borderWidth|bgColor|titleBGColor)=.+?)*\}([^]*?)\n?\{code\}/gm,
     '```$2$5\n```'
   )
-  .replace(/\{noformat\}/g, '```')
 }
 
 export async function convertJiraMarkdownToHtml(jiraMarkdown: string): Promise<string> {
