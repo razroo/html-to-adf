@@ -143,6 +143,7 @@ it('should convert a pre tag to code block', () => {
                 type: "link",
                 attrs: {
                   href: "https://example.com",
+                  title: "Example"
                 },
               },
             ],
