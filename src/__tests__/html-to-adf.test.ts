@@ -1,4 +1,4 @@
-import {convertHtmlToADF} from '../html-to-adf';
+import {convertHtmlToADF} from "../html-to-adf";
 
 it('should convert a simple paragraph with bold', () => {
   const htmlString = `<p>test <b>this</b></p>`;
@@ -122,3 +122,37 @@ it('should convert a pre tag to code block', () => {
    }
    expect(result).toEqual(expected);
  });
+
+
+ it('should convert an a href tag to url', () => {
+  const htmlString = `<p><a href="https://example.com" title="Example" target="_blank">hello</a></br></p>
+   `;
+  const result = convertHtmlToADF(htmlString);
+  const expected = {
+    version: 1,
+    type: "doc",
+    content: [
+      {
+        type: "paragraph",
+        content: [
+          {
+            type: "text",
+            text: "hello",
+            marks: [
+              {
+                type: "link",
+                attrs: {
+                  href: "https://example.com",
+                },
+              },
+            ],
+          },
+          {
+            type: "hardBreak",
+          },
+        ],
+      },
+    ],
+  };
+  expect(result).toEqual(expected);
+});

@@ -25,8 +25,8 @@ const processNode = (node: any, marks = [] as any) => {
       marks.push({
         type: "link",
         attrs: {
-          href: node.attributes.href,
-          title: node.text || node.textContent,
+          href: node.attribs.href,
+          title: node.attribs.title || node.text || node.textContent,
         },
       });
     } else if (node.name === "br") {
